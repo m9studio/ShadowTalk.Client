@@ -7,7 +7,6 @@
         public int Port;
 
 
-
         //для расшифровки сообщений
         public string RSA;
 
