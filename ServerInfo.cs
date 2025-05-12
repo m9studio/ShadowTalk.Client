@@ -2,9 +2,9 @@
 {
     internal class ServerInfo
     {
+        public string ServerName;
         public string IP;
         public int Port;
-
 
 
 
