@@ -2,6 +2,9 @@
 {
     internal class Message
     {
+        public int ServerId;
+        public int UserId;
+
         public string UUID;
         public int Date;
         public string Text;

@@ -2,6 +2,9 @@
 {
     internal class User
     {
+        public int ServerId;
+        public ServerInfo server;
+
         public int Id;
         public string Name;
 
