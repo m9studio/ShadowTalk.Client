@@ -36,25 +36,28 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(12, 9);
+            label1.Location = new Point(17, 14);
+            label1.Margin = new Padding(4, 0, 4, 0);
             label1.Name = "label1";
-            label1.Size = new Size(27, 15);
+            label1.Size = new Size(42, 23);
             label1.TabIndex = 0;
             label1.Text = "Код";
             // 
             // textBox1
             // 
-            textBox1.Location = new Point(12, 27);
+            textBox1.Location = new Point(17, 41);
+            textBox1.Margin = new Padding(4, 5, 4, 5);
             textBox1.Name = "textBox1";
             textBox1.PlaceholderText = "Введите код подтверждения";
-            textBox1.Size = new Size(197, 23);
+            textBox1.Size = new Size(280, 30);
             textBox1.TabIndex = 1;
             // 
             // button1
             // 
-            button1.Location = new Point(12, 64);
+            button1.Location = new Point(17, 98);
+            button1.Margin = new Padding(4, 5, 4, 5);
             button1.Name = "button1";
-            button1.Size = new Size(197, 23);
+            button1.Size = new Size(281, 35);
             button1.TabIndex = 2;
             button1.Text = "Войти";
             button1.UseVisualStyleBackColor = true;
@@ -62,13 +65,15 @@
             // 
             // FormLogin2FA
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(10F, 23F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(221, 99);
+            ClientSize = new Size(316, 152);
             Controls.Add(button1);
             Controls.Add(textBox1);
             Controls.Add(label1);
+            Font = new Font("Tahoma", 14.25F);
             FormBorderStyle = FormBorderStyle.FixedSingle;
+            Margin = new Padding(4, 5, 4, 5);
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "FormLogin2FA";

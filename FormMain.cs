@@ -5,8 +5,10 @@ namespace M9Studio.ShadowTalk.Client
         public FormMain()
         {
             InitializeComponent();
-            MessageElemet e = new MessageElemet();
-            Controls.Add(e);
         }
+
+
+
+
     }
 }

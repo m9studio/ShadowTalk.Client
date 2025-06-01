@@ -37,26 +37,29 @@
             // 
             // textBox1
             // 
-            textBox1.Location = new Point(12, 27);
+            textBox1.Location = new Point(17, 41);
+            textBox1.Margin = new Padding(4, 5, 4, 5);
             textBox1.Name = "textBox1";
             textBox1.PlaceholderText = "Введите логин";
-            textBox1.Size = new Size(244, 23);
+            textBox1.Size = new Size(347, 30);
             textBox1.TabIndex = 0;
             // 
             // textBox2
             // 
-            textBox2.Location = new Point(12, 71);
+            textBox2.Location = new Point(17, 109);
+            textBox2.Margin = new Padding(4, 5, 4, 5);
             textBox2.Name = "textBox2";
             textBox2.PlaceholderText = "Введите пароль";
-            textBox2.Size = new Size(244, 23);
+            textBox2.Size = new Size(347, 30);
             textBox2.TabIndex = 1;
             textBox2.UseSystemPasswordChar = true;
             // 
             // button1
             // 
-            button1.Location = new Point(12, 112);
+            button1.Location = new Point(17, 172);
+            button1.Margin = new Padding(4, 5, 4, 5);
             button1.Name = "button1";
-            button1.Size = new Size(244, 23);
+            button1.Size = new Size(349, 35);
             button1.TabIndex = 2;
             button1.Text = "Войти";
             button1.UseVisualStyleBackColor = true;
@@ -65,32 +68,36 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(12, 9);
+            label1.Location = new Point(17, 14);
+            label1.Margin = new Padding(4, 0, 4, 0);
             label1.Name = "label1";
-            label1.Size = new Size(41, 15);
+            label1.Size = new Size(63, 23);
             label1.TabIndex = 3;
             label1.Text = "Логин";
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(12, 53);
+            label2.Location = new Point(17, 81);
+            label2.Margin = new Padding(4, 0, 4, 0);
             label2.Name = "label2";
-            label2.Size = new Size(49, 15);
+            label2.Size = new Size(75, 23);
             label2.TabIndex = 4;
             label2.Text = "Пароль";
             // 
             // FormLogin
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(10F, 23F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(268, 147);
+            ClientSize = new Size(383, 225);
             Controls.Add(label2);
             Controls.Add(label1);
             Controls.Add(button1);
             Controls.Add(textBox2);
             Controls.Add(textBox1);
+            Font = new Font("Tahoma", 14.25F);
             FormBorderStyle = FormBorderStyle.FixedSingle;
+            Margin = new Padding(4, 5, 4, 5);
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "FormLogin";
