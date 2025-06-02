@@ -96,6 +96,8 @@
             // 
             // panelMain
             // 
+            panelMain.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            panelMain.BackColor = SystemColors.ActiveCaption;
             panelMain.Location = new Point(2, 52);
             panelMain.Name = "panelMain";
             panelMain.Size = new Size(596, 446);

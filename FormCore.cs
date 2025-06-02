@@ -1,19 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Net.Http;
+﻿
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace M9Studio.ShadowTalk.Client
 {
     public partial class FormCore : Form
     {
+        private const int DWMWA_SYSTEMBACKDROP_TYPE = 38;
+        private const int DWMWA_WINDOW_CORNER_PREFERENCE = 33;
+        private const int DWMWA_BORDER_COLOR = 34;
+
+        [DllImport("dwmapi.dll")]
+        private static extern int DwmSetWindowAttribute(IntPtr hwnd, int attr, ref int attrValue, int attrSize);
         [DllImport("user32.dll")]
         public static extern bool ReleaseCapture();
         [DllImport("user32.dll")]
@@ -29,14 +26,20 @@ namespace M9Studio.ShadowTalk.Client
         private const int HTBOTTOM = 15;
         private const int HTBOTTOMLEFT = 16;
         private const int HTBOTTOMRIGHT = 17;
+        const int WM_NCLBUTTONDOWN = 0xA1;
+        const int HTCAPTION = 0x2;
 
         private const int resizeArea = 10;
+
+        private bool dragging = false;
+        private Point dragCursorPoint;
+        private Point dragFormPoint;
 
 
         public FormCore()
         {
             InitializeComponent();
-
+            EnableRoundedCorners();
 
         }
         private void panel1_MouseDown(object sender, MouseEventArgs e)
@@ -44,9 +47,25 @@ namespace M9Studio.ShadowTalk.Client
             if (e.Button == MouseButtons.Left)
             {
                 ReleaseCapture();
-                SendMessage(this.Handle, 0x112, 0xf012, 0);
+                SendMessage(this.Handle, WM_NCLBUTTONDOWN, HTCAPTION, 0);
             }
         }
+
+        protected override void OnHandleCreated(EventArgs e)
+        {
+            base.OnHandleCreated(e);
+
+            if (Environment.OSVersion.Version.Build >= 22000) // Windows 11
+            {
+                int preference = 2; // Round corners
+                DwmSetWindowAttribute(this.Handle, DWMWA_WINDOW_CORNER_PREFERENCE, ref preference, sizeof(int));
+
+                int backdropType = 2; // Mica / Default
+                DwmSetWindowAttribute(this.Handle, DWMWA_SYSTEMBACKDROP_TYPE, ref backdropType, sizeof(int));
+            }
+        }
+
+
 
         private void pictureBox1_Click(object sender, EventArgs e) => this.Close();
         private void pictureBox2_Click(object sender, EventArgs e)
@@ -64,7 +83,36 @@ namespace M9Studio.ShadowTalk.Client
         }
         private void pictureBox3_Click(object sender, EventArgs e) => this.WindowState = FormWindowState.Minimized;
 
+        public enum DwmWindowCornerPreference
+        {
+            Default = 0,
+            DoNotRound = 1,
+            Round = 2,
+            RoundSmall = 3
+        }
 
+        [DllImport("dwmapi.dll")]
+        private static extern int DwmSetWindowAttribute(IntPtr hwnd, int dwAttribute, ref DwmWindowCornerPreference pvAttribute, int cbAttribute);
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                var cp = base.CreateParams;
+                cp.Style |= 0x00040000; // WS_SIZEBOX (aka WS_THICKFRAME) — позволяет ресайз
+                cp.Style |= 0x00020000; // WS_MINIMIZEBOX
+                cp.Style |= 0x00010000; // WS_MAXIMIZEBOX
+                return cp;
+            }
+        }
+        public void EnableRoundedCorners()
+        {
+            if (Environment.OSVersion.Version.Build >= 22000) // Windows 11
+            {
+                var attribute = DwmWindowCornerPreference.Round;
+                DwmSetWindowAttribute(this.Handle, DWMWA_WINDOW_CORNER_PREFERENCE, ref attribute, sizeof(uint));
+            }
+        }
 
 
         protected override void WndProc(ref System.Windows.Forms.Message m)
