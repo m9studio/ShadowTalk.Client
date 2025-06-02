@@ -6,9 +6,5 @@ namespace M9Studio.ShadowTalk.Client
         {
             InitializeComponent();
         }
-
-
-
-
     }
 }

@@ -1,4 +1,7 @@
-﻿namespace M9Studio.ShadowTalk.Client
+﻿using M9Studio.SecureStream;
+using System.Net;
+
+namespace M9Studio.ShadowTalk.Client
 {
     internal class User
     {
@@ -10,5 +13,8 @@
 
         //симетричный ключ шифрования, для отправки через сервер
         public string Key;
+
+        //сессия
+        public SecureSession<IPEndPoint>? Session = null;
     }
 }

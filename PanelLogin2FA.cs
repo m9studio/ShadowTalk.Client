@@ -10,16 +10,11 @@ using System.Windows.Forms;
 
 namespace M9Studio.ShadowTalk.Client
 {
-    public partial class FormLogin : Form
+    public partial class PanelLogin2FA : UserControl
     {
-        public FormLogin()
+        public PanelLogin2FA()
         {
             InitializeComponent();
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }
