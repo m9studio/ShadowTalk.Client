@@ -8,6 +8,29 @@ namespace M9Studio.ShadowTalk.Client
 {
     partial class Core
     {
+
+        public void NewConnect(ServerInfo server, string Email, string Password)
+        {
+            Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            IPEndPoint address = new IPEndPoint(IPAddress.Any, 0);
+            socket.Bind(address);
+            socket.Listen(10);
+            TcpSecureTransportAdapter adapter = new TcpSecureTransportAdapter(socket);
+
+            server.ChannelManager = new SecureChannelManager<IPEndPoint>(adapter);
+            server.Session = server.ChannelManager.Connect(new IPEndPoint(IPAddress.Parse(server.IP), server.Port));
+
+            if (server.Session.Send(new PacketClientToServerLogin()
+            {
+                Email = Email,
+                Password = Password
+            }))
+            {
+
+            }
+        }
+
+
         private void Connect(ServerInfo server)
         {
             Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
