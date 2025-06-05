@@ -6,7 +6,6 @@ namespace M9Studio.ShadowTalk.Client
     internal class User
     {
         public int ServerId;
-        public ServerInfo server;
 
         public int Id;
         public string Name;
@@ -14,7 +13,11 @@ namespace M9Studio.ShadowTalk.Client
         //симетричный ключ шифрования, для отправки через сервер
         public string Key;
 
+        public string RSA;
+
         //сессия
-        public SecureSession<IPEndPoint>? Session = null;
+        public SecureSession<IPEndPoint> Session;
+        public int NewCount = 0;
+        public ServerInfo Server;
     }
 }

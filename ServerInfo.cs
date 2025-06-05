@@ -1,4 +1,7 @@
-﻿namespace M9Studio.ShadowTalk.Client
+﻿using M9Studio.SecureStream;
+using System.Net;
+
+namespace M9Studio.ShadowTalk.Client
 {
     internal class ServerInfo
     {
@@ -19,5 +22,9 @@
         public string K;
         public string token;
         public string hmac;
+
+        public SecureChannelManager<IPEndPoint> ChannelManager;
+        public SecureSession<IPEndPoint> Session;
+        public Dictionary<int, User> Users = new Dictionary<int, User>();
     }
 }
