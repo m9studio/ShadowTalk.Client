@@ -26,8 +26,19 @@ namespace M9Studio.ShadowTalk.Client
                 Password = Password
             }))
             {
+                JObject packet1 = server.Session.ReceiveJObject();
+                PacketServerToClientLoginError error = PacketStruct.Parse<PacketServerToClientLoginError>(packet1);
+                if(error == null)
+                {
 
+                }
+                else
+                {
+                    //TODO окно с ошибкой
+                }
             }
+            server.ChannelManager = null;
+            server.Session = null;
         }
 
 
@@ -140,8 +151,11 @@ namespace M9Studio.ShadowTalk.Client
                     Task.Run(() => {
                         Daemon(server);
                     });
+                    return;
                 }
             }
+            server.ChannelManager = null;
+            server.Session = null;
         }
     }
 }
