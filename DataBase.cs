@@ -2,7 +2,7 @@
 
 namespace M9Studio.ShadowTalk.Client
 {
-    internal class DataBase
+    public class DataBase
     {
         private SQLiteConnection connection;
         public DataBase()
@@ -13,7 +13,6 @@ namespace M9Studio.ShadowTalk.Client
             {
                 SQLiteConnection.CreateFile("localdb.sqlite");
                 isNew = true;
-
             }
             connection = new SQLiteConnection(connectionString);
             connection.Open();
@@ -39,8 +38,8 @@ namespace M9Studio.ShadowTalk.Client
                         name TEXT,
                         id INTEGER,
                         k TEXT,
-                        token TEXT,
-                        hmac TEXT
+                        publica TEXT,
+                        privatea TEXT
                     )";
 
                 string createMessagesTable = @"
@@ -78,8 +77,10 @@ namespace M9Studio.ShadowTalk.Client
                     Name = reader["name"].ToString(),
                     Id = Convert.ToInt32(reader["id"]),
                     K = reader["k"].ToString(),
-                    token = reader["token"].ToString(),
-                    hmac = reader["hmac"].ToString()
+                    PublicA = reader["publica"].ToString(),
+                    PrivateA = reader["privatea"].ToString(),
+                    //token = reader["token"].ToString(),
+                    //hmac = reader["hmac"].ToString()
                 });
             }
             return servers;

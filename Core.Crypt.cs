@@ -1,15 +1,9 @@
-﻿using System.Net.Sockets;
-using System.Net;
-using M9Studio.SecureStream;
-using M9Studio.ShadowTalk.Core;
-using Newtonsoft.Json.Linq;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
-using M9Studio.ShadowTalk.Client.Packet;
 
 namespace M9Studio.ShadowTalk.Client
 {
-    partial class Core
+    public partial class Core
     {
         public static string DecryptWithRSA(string base64EncryptedText, string privateKeyXml)
         {

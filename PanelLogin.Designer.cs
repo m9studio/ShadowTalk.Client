@@ -38,7 +38,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(3, 58);
+            label2.Location = new Point(3, 82);
             label2.Margin = new Padding(4, 0, 4, 0);
             label2.Name = "label2";
             label2.Size = new Size(49, 15);
@@ -57,45 +57,49 @@
             // 
             // button1
             // 
-            button1.Location = new Point(2, 128);
+            button1.Location = new Point(4, 168);
             button1.Margin = new Padding(4, 5, 4, 5);
             button1.Name = "button1";
             button1.Size = new Size(356, 35);
             button1.TabIndex = 7;
             button1.Text = "Войти";
             button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
             // 
             // textBox2
             // 
-            textBox2.Location = new Point(4, 78);
+            textBox2.Location = new Point(6, 116);
             textBox2.Margin = new Padding(4, 5, 4, 5);
             textBox2.Name = "textBox2";
             textBox2.PlaceholderText = "Введите пароль";
             textBox2.Size = new Size(354, 23);
             textBox2.TabIndex = 6;
+            textBox2.Text = "12345678";
             textBox2.UseSystemPasswordChar = true;
             // 
             // textBox1
             // 
-            textBox1.Location = new Point(4, 30);
+            textBox1.Location = new Point(4, 39);
             textBox1.Margin = new Padding(4, 5, 4, 5);
             textBox1.Name = "textBox1";
             textBox1.PlaceholderText = "Введите логин";
             textBox1.Size = new Size(354, 23);
             textBox1.TabIndex = 5;
+            textBox1.Text = "mina987@com.com";
             // 
             // PanelLogin
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
+            BackColor = Color.White;
             Controls.Add(label2);
             Controls.Add(label1);
             Controls.Add(button1);
             Controls.Add(textBox2);
             Controls.Add(textBox1);
             Name = "PanelLogin";
-            Size = new Size(362, 168);
+            Size = new Size(364, 208);
             ResumeLayout(false);
             PerformLayout();
         }

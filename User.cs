@@ -3,7 +3,7 @@ using System.Net;
 
 namespace M9Studio.ShadowTalk.Client
 {
-    internal class User
+    public class User
     {
         public int ServerId;
 
@@ -15,9 +15,71 @@ namespace M9Studio.ShadowTalk.Client
 
         public string RSA;
 
+
+
         //сессия
-        public SecureSession<IPEndPoint> Session;
-        public int NewCount = 0;
+        private SecureSession<IPEndPoint> _Session;
+        public SecureSession<IPEndPoint> Session
+        {
+            get => _Session;
+            set
+            {
+                _Session = value;
+                if (Panel != null)
+                {
+                    if (value != null)
+                    {
+                        Panel.labelName.ForeColor = Color.Green;
+                    }
+                    else
+                    {
+                        Panel.labelName.ForeColor = Color.Black;
+                    }
+                }
+                if (Form != null)
+                {
+                    if (value != null)
+                    {
+                        Form.labelName.ForeColor = Color.Green;
+                    }
+                    else
+                    {
+                        Form.labelName.ForeColor = Color.Black;
+                    }
+                }
+            }
+        }
+
+
+
+        private int _newCount = 0;
+        public int NewCount {
+            get => _newCount;
+            set
+            {
+                if(Form != null)
+                {
+                    _newCount = 0;
+                }
+                else
+                {
+                    _newCount = value;
+                }
+                if (Panel != null)
+                {
+                    if(_newCount > 0)
+                    {
+                        Panel.labelCount.Text = _newCount.ToString();
+                    }
+                    else
+                    {
+                        Panel.labelCount.Text = "";
+                    }
+                }
+            }
+        }
         public ServerInfo Server;
+        public PanelUser Panel;
+        public FormMain Form;
     }
 }

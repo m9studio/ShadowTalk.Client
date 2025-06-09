@@ -1,6 +1,6 @@
 ﻿namespace M9Studio.ShadowTalk.Client
 {
-    internal class Message
+    public class Message
     {
         public int ServerId;
         public int UserId;
