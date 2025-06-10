@@ -10,7 +10,7 @@ namespace M9Studio.ShadowTalk.Client
     public partial class Core
     {
         public FormMain form;
-        public int Port = 1;
+        public int Port => udpTransportAdapter._socket.Port;
         public List<User> Users;
         public Dictionary<int, ServerInfo> Servers = new Dictionary<int, ServerInfo>();
         public DataBase DataBase = new DataBase();
