@@ -82,7 +82,7 @@ namespace M9Studio.ShadowTalk.Client
             return null;
         }
 
-
+        public User waitP2P;
 
         private void Daemon(ServerInfo server)
         {
@@ -140,7 +140,25 @@ namespace M9Studio.ShadowTalk.Client
                 PacketServerToClientAnswerOnConnectP2P p4 = PacketStruct.TryParse<PacketServerToClientAnswerOnConnectP2P>(packet);
                 if (p4 != null)
                 {
-
+                    if(waitP2P != null)
+                    {
+                        Task.Run(() =>
+                        {
+                            SecureSession<IPEndPoint> s = null;
+                            for (int i = 0; i < 100; i++)
+                            {
+                                s = sesssions.FirstOrDefault(s => s.RemoteAddress.Address.Address.ToString() == p4.Ip && s.RemoteAddress.Port == p4.Port, null);
+                                if (s != null)
+                                {
+                                    sesssionsUsers.Add(s, waitP2P);
+                                    waitP2P.Session = s;
+                                    break;
+                                }
+                                Thread.Sleep(100);
+                            }
+                            waitP2P = null;
+                        });
+                    }
                     continue;
                 }
                 PacketServerToClientAnswerOnSearchUser p5 = PacketStruct.TryParse<PacketServerToClientAnswerOnSearchUser>(packet);
@@ -182,7 +200,7 @@ namespace M9Studio.ShadowTalk.Client
                     }
                     else
                     {
-
+                        //TODO
                     }
                     continue;
                 }
