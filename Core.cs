@@ -3,7 +3,6 @@ using Newtonsoft.Json.Linq;
 using M9Studio.ShadowTalk.Client.Packet;
 using M9Studio.SecureStream;
 using System.Net;
-using Microsoft.VisualBasic.ApplicationServices;
 using System.Diagnostics;
 
 namespace M9Studio.ShadowTalk.Client
@@ -62,12 +61,15 @@ namespace M9Studio.ShadowTalk.Client
 
         private void DaemonSession(User user)
         {
-            user.Panel.labelName.ForeColor = Color.Green;
+            form.Invoke(() =>
+            {
+                user.Panel.labelName.ForeColor = Color.Green;
+            });
             while (user.Session != null)
             {
-
                 JObject packet = user.Session.ReceiveJObject();
                 PacketMessageSend p1 = PacketStruct.TryParse<PacketMessageSend>(packet);
+                Debug.WriteLine(packet);
                 if (p1 != null)
                 {
                     Message msg = new Message()
@@ -91,15 +93,21 @@ namespace M9Studio.ShadowTalk.Client
                         msg.Sender
                         );
 
-                    form.messages.Add( msg );
                     if (user.Form != null)
                     {
+                        form.messages.Add(msg);
                         form.AddMessage(msg);
                     }
-                    user.NewCount++;
+                    form.Invoke(() =>
+                    {
+                        user.NewCount++;
+                    });
+                    
                 }
             }
-            user.Panel.labelName.ForeColor = Color.Red;
+            form.Invoke(() => {
+                user.Panel.labelName.ForeColor = Color.Red;
+            });
         }
 
         private void OnDisconnect(SecureSession<IPEndPoint> session)
@@ -148,7 +156,11 @@ namespace M9Studio.ShadowTalk.Client
                         {
                             continue;
                         }
-                        user.NewCount++;
+
+                        form.Invoke(() =>
+                        {
+                            user.NewCount++;
+                        });
                         DataBase.Send("INSERT INTO users (id, name, serverid, rsa, newcount) VALUES (?, ?, ?, ?, ?)", user.Id, user.Name, user.ServerId, user.RSA, user.NewCount);
                         server.Users.Add(p1.Users[0], user);
                         Users.Add(user);
@@ -182,7 +194,11 @@ namespace M9Studio.ShadowTalk.Client
                         text,
                         p1.Users[0]
                         );
-                    user.NewCount++;
+
+                    form.Invoke(() =>
+                    {
+                        user.NewCount++;
+                    });
 
                     if (user == form.userNow)
                     {
@@ -273,7 +289,8 @@ namespace M9Studio.ShadowTalk.Client
                                 {
                                     sesssionsUsers.Add(s, waitP2P);
                                     waitP2P.Session = s;
-                                    Task.Run(() => { DaemonSession(waitP2P); });
+                                    User u = waitP2P;
+                                    Task.Run(() => { DaemonSession(u); });
                                     break;
                                 }
                                 Thread.Sleep(100);
@@ -388,6 +405,10 @@ namespace M9Studio.ShadowTalk.Client
                 return user;
             }
             LoadUser = null;
+            if (server.Session == null)
+            {
+                return server.Users.GetValueOrDefault(id, null);
+            }
             server.Session.Send(new PacketClientToServerGetUser()
             {
                 Id = id,
@@ -408,7 +429,11 @@ namespace M9Studio.ShadowTalk.Client
 
         public List<Message> LoadChat(int Server, int User)
         {
-            Servers[Server].Users[User].NewCount = 0;
+
+            form.Invoke(() =>
+            {
+                Servers[Server].Users[User].NewCount = 0;
+            });
             DataBase.Send("UPDATE users SET newcount = ? WHERE serverid = ? AND id = ?", 0, Server, User);
             return DataBase.Message(User, Server).OrderBy(m => m.Date).ToList();
         }

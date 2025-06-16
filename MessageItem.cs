@@ -18,7 +18,7 @@
             label1.Text = msg.Text;
 
 
-            label1.ContextMenuStrip = contextMenu;
+            this.ContextMenuStrip = contextMenu;
 
             DateTime dateTime = DateTimeOffset.FromUnixTimeSeconds(msg.Date).LocalDateTime;
             label2.Text = dateTime.ToString("dd.MM.yyyy\nHH:mm:ss");
@@ -31,9 +31,6 @@
             tooltip.ReshowDelay = 200;       // задержка при повторном наведении
             tooltip.ShowAlways = true;       // показывать даже если окно не в фокусе
 
-
-
-
             update();
         }
 
@@ -42,23 +39,50 @@
             contextMenu.Items.Clear();
             if (msg.Status == -2 || msg.Status == -1)
             {
-                contextMenu.Items.Add("Повторить отправку", null, (s, e) => { });
+                contextMenu.Items.Add("Повторить отправку", null, (s, e) => {
+                    var m = PanelUser.form.core.SendMessage(PanelUser.form.userNow, msg.Text, msg.UUID);
+                    msg.Status = m.Status;
+                    update();
+                });
+                contextMenu.Items.Add("Удалить", null, (s, e) => {
+                    PanelUser.form.core.DataBase.Send("DELETE FROM messages WHERE uuid = ?", msg.UUID);
+                    PanelUser.form.messages.Remove(msg);
+                    PanelUser.form.ItemsChat.Remove(msg.UUID);
+                    PanelUser.form.panelChat.Controls.Remove(this);
+                });
 
                 tooltip.SetToolTip(label1, "Сообщение не доставлено");
+                label2.ForeColor = Color.Red;
                 return;
             }
             if(msg.Status == 0)
             {
-
                 tooltip.SetToolTip(label1, "Сообщение ожидает получения");
+                contextMenu.Items.Add("Удалить", null, (s, e) => {
+                    PanelUser.form.core.DataBase.Send("DELETE FROM messages WHERE uuid = ?", msg.UUID);
+                    PanelUser.form.messages.Remove(msg);
+                    PanelUser.form.ItemsChat.Remove(msg.UUID);
+                    PanelUser.form.panelChat.Controls.Remove(this);
+                });
+                label2.ForeColor = Color.Yellow;
                 return;
             }
             //status == 1
             tooltip.SetToolTip(label1, "Сообщение доставлено");
+            contextMenu.Items.Add("Удалить", null, (s, e) => {
+                PanelUser.form.core.DataBase.Send("DELETE FROM messages WHERE uuid = ?", msg.UUID);
+                PanelUser.form.messages.Remove(msg);
+                PanelUser.form.ItemsChat.Remove(msg.UUID);
+                PanelUser.form.panelChat.Controls.Remove(this);
+            });
+            label2.ForeColor = Color.Green;
 
         }
 
-
+        public void SetRight()
+        {
+            label1.TextAlign = ContentAlignment.TopRight;
+        }
 
     }
 }

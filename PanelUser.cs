@@ -16,7 +16,6 @@ namespace M9Studio.ShadowTalk.Client
             labelServer.Text = User.Server.ServerName;
             labelCount.Text = User.NewCount.ToString();
 
-            this.Click += clik;
             labelName.Click += clik;
             labelServer.Click += clik;
             labelCount.Click += clik;

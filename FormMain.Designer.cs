@@ -81,7 +81,7 @@
             // panelUsers
             // 
             panelUsers.AutoScroll = true;
-            panelUsers.BackColor = SystemColors.ActiveBorder;
+            panelUsers.BackColor = Color.Transparent;
             panelUsers.Dock = DockStyle.Fill;
             panelUsers.Location = new Point(0, 50);
             panelUsers.Name = "panelUsers";
@@ -140,7 +140,8 @@
             // 
             // panelChat
             // 
-            panelChat.BackColor = SystemColors.ControlDarkDark;
+            panelChat.AutoScroll = true;
+            panelChat.BackColor = Color.Transparent;
             panelChat.Dock = DockStyle.Fill;
             panelChat.Location = new Point(0, 50);
             panelChat.Name = "panelChat";
@@ -259,7 +260,7 @@
         public Panel panelAir;
         public FlowLayoutPanel panelUsers;
         private Panel panel3;
-        private FlowLayoutPanel panelChat;
+        public FlowLayoutPanel panelChat;
         private FlowLayoutPanel flowLayoutPanel1;
         public Label labelName;
         public Label labelServer;

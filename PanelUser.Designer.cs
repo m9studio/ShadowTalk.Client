@@ -37,15 +37,17 @@
             // 
             // flowLayoutPanel1
             // 
-            flowLayoutPanel1.BackColor = SystemColors.ActiveCaption;
+            flowLayoutPanel1.BackColor = SystemColors.ControlLight;
             flowLayoutPanel1.Controls.Add(labelName);
             flowLayoutPanel1.Controls.Add(labelServer);
             flowLayoutPanel1.Controls.Add(labelCount);
+            flowLayoutPanel1.Cursor = Cursors.Hand;
             flowLayoutPanel1.Dock = DockStyle.Fill;
             flowLayoutPanel1.Location = new Point(0, 0);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
             flowLayoutPanel1.Size = new Size(10000, 30);
             flowLayoutPanel1.TabIndex = 0;
+            flowLayoutPanel1.Click += clik;
             // 
             // labelName
             // 

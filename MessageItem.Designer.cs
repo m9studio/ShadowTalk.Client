@@ -34,10 +34,10 @@
             // 
             // label1
             // 
-            label1.AutoSize = true;
+            label1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             label1.Location = new Point(75, 0);
             label1.Name = "label1";
-            label1.Size = new Size(38, 15);
+            label1.Size = new Size(222, 40);
             label1.TabIndex = 0;
             label1.Text = "label1";
             // 
@@ -55,10 +55,11 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
+            BackColor = SystemColors.ControlLight;
             Controls.Add(label2);
             Controls.Add(label1);
             Name = "MessageItem";
-            Size = new Size(300, 46);
+            Size = new Size(300, 40);
             ResumeLayout(false);
             PerformLayout();
         }

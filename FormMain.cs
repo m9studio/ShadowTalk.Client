@@ -23,7 +23,6 @@ namespace M9Studio.ShadowTalk.Client
 
             Shown += (o, e) =>
             {
-
                 textBox1_TextChanged(null, null);
             };
         }
@@ -131,7 +130,7 @@ namespace M9Studio.ShadowTalk.Client
 
 
 
-        Dictionary<string, MessageItem> ItemsChat;
+        public Dictionary<string, MessageItem> ItemsChat;
         public void OpenChat(User user)
         {
             Invoke(() =>
@@ -163,7 +162,7 @@ namespace M9Studio.ShadowTalk.Client
                 messageText.Enabled = true;
                 buttonSend.Enabled = true;
 
-                messages = core.DataBase.Message(user.Id, user.ServerId);
+                messages = core.LoadChat(user.ServerId, user.Id);
 
                 foreach (var message in messages)
                 {
@@ -177,26 +176,34 @@ namespace M9Studio.ShadowTalk.Client
             Invoke(() =>
             {
                 MessageItem item = new MessageItem(message);
-                item.AutoSize = true;
-                item.MaximumSize = new Size(panelChat.Width - 40, 0); // адаптивная ширина
-                item.Margin = new Padding(5);
-
+                //item.MaximumSize = new Size(panelChat.Width - 40, 0); // адаптивная ширина
                 // Центрируем вручную с помощью Padding
                 if (message.Sender == userNow.Id)
                 {
                     // Прижать вправо — добавляем пустое пространство слева
-                    int leftPadding = panelChat.Width / 2;
-                    item.Padding = new Padding(leftPadding, 0, 0, 0);
+                    /*int leftPadding = panelChat.Width / 2;
+                    item.Padding = new Padding(leftPadding, 0, 0, 0);*/
+                    item.SetRight();
                 }
                 else
                 {
                     // Прижать влево — добавляем пустое пространство справа
-                    int rightPadding = panelChat.Width / 2;
-                    item.Padding = new Padding(0, 0, rightPadding, 0);
+                    /*int rightPadding = panelChat.Width / 2;
+                    item.Padding = new Padding(0, 0, rightPadding, 0);*/
                 }
                 ItemsChat.Add(message.UUID, item);
                 panelChat.Controls.Add(item);
                 panelChat.ScrollControlIntoView(panelChat.Controls[panelChat.Controls.Count - 1]);
+
+
+
+                // Допустим, у вас есть элемент, например button1
+                int x = item.Location.X;
+                int y = item.Location.Y;
+
+                // Сохраняем позицию и изменяем ширину
+                int newWidth = panelChat.Width - 40; // новая ширина
+                item.SetBounds(x, y, newWidth, item.Height);
             });
 
         }
@@ -239,13 +246,13 @@ namespace M9Studio.ShadowTalk.Client
                 {
                     if (ctrl is MessageItem item)
                     {
-                        int pad = panelChat.Width / 2;
-                        if (item.msg.Sender == userNow.Id)
-                            item.Padding = new Padding(pad, 0, 0, 0);
-                        else
-                            item.Padding = new Padding(0, 0, pad, 0);
+                        // Допустим, у вас есть элемент, например button1
+                        int x = item.Location.X;
+                        int y = item.Location.Y;
 
-                        item.MaximumSize = new Size(panelChat.Width - 40, 0);
+                        // Сохраняем позицию и изменяем ширину
+                        int newWidth = panelChat.Width - 40; // новая ширина
+                        item.SetBounds(x, y, newWidth, item.Height);
                     }
                 }
             });
