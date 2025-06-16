@@ -244,7 +244,7 @@ namespace M9Studio.ShadowTalk.Client
 
                         DataBase.Send("INSERT INTO messages (uuid, serverid, userid, date, status, text, sender) VALUES (?, ?, ?, ?, ?, ?, ?)",
                             messages.UUIDs[i],
-                            server.Id,
+                            server.ServerId,
                             messages.Users[i],
                             messages.Dates[i],
                             1,

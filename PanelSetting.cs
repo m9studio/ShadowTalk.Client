@@ -80,7 +80,7 @@ namespace M9Studio.ShadowTalk.Client
             {
                 form.core.Servers.Remove(server.Id);
             }
-            if(server.ChannelManager != null)
+            if (server.ChannelManager != null)
             {
                 Socket socket = server.Socket;
                 if (socket.Connected)
@@ -101,11 +101,16 @@ namespace M9Studio.ShadowTalk.Client
                 form.core.DataBase.Send("DELETE FROM users WHERE serverid = ?", server.ServerId);
                 form.core.DataBase.Send("DELETE FROM messages WHERE serverid = ?", server.ServerId);
 
-                if(form.userNow != null && form.userNow.ServerId == server.ServerId)
+                if (form.userNow != null && form.userNow.ServerId == server.ServerId)
                 {
                     form.ClearChat();
                 }
             }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show($"Порт: {form.core.Port}", "UDP Порт");
         }
     }
 }

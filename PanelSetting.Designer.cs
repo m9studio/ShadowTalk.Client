@@ -33,6 +33,7 @@
             textBoxPort = new TextBox();
             textBoxIP = new TextBox();
             textBoxName = new TextBox();
+            button2 = new Button();
             SuspendLayout();
             // 
             // listView1
@@ -44,7 +45,6 @@
             listView1.TabIndex = 8;
             listView1.UseCompatibleStateImageBehavior = false;
             listView1.KeyDown += listView1_KeyDown;
-
             // 
             // button1
             // 
@@ -87,19 +87,31 @@
             textBoxName.TabIndex = 9;
             textBoxName.Text = "Main";
             // 
+            // button2
+            // 
+            button2.Location = new Point(327, 590);
+            button2.Margin = new Padding(4, 5, 4, 5);
+            button2.Name = "button2";
+            button2.Size = new Size(107, 35);
+            button2.TabIndex = 10;
+            button2.Text = "Порт";
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
+            // 
             // PanelSetting
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
             BackColor = Color.White;
+            Controls.Add(button2);
             Controls.Add(textBoxName);
             Controls.Add(listView1);
             Controls.Add(button1);
             Controls.Add(textBoxPort);
             Controls.Add(textBoxIP);
             Name = "PanelSetting";
-            Size = new Size(438, 585);
+            Size = new Size(438, 630);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -111,5 +123,6 @@
         private TextBox textBoxPort;
         private TextBox textBoxIP;
         private TextBox textBoxName;
+        private Button button2;
     }
 }

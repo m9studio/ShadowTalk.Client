@@ -183,13 +183,13 @@ namespace M9Studio.ShadowTalk.Client
                     // Прижать вправо — добавляем пустое пространство слева
                     /*int leftPadding = panelChat.Width / 2;
                     item.Padding = new Padding(leftPadding, 0, 0, 0);*/
-                    item.SetRight();
                 }
                 else
                 {
                     // Прижать влево — добавляем пустое пространство справа
                     /*int rightPadding = panelChat.Width / 2;
                     item.Padding = new Padding(0, 0, rightPadding, 0);*/
+                    item.SetRight();
                 }
                 ItemsChat.Add(message.UUID, item);
                 panelChat.Controls.Add(item);

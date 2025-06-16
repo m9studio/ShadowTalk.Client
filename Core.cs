@@ -332,7 +332,7 @@ namespace M9Studio.ShadowTalk.Client
                                     RSA = p5.RSAs[i],
                                     Id = p5.Ids[i],
                                     Name = p5.Names[i],
-                                    ServerId = server.Id,
+                                    ServerId = server.ServerId,
                                     Server = server,
                                     NewCount = 0,
                                 };
@@ -355,7 +355,7 @@ namespace M9Studio.ShadowTalk.Client
                                 RSA = p5.RSAs[0],
                                 Id = p5.Ids[0],
                                 Name = p5.Names[0],
-                                ServerId = server.Id,
+                                ServerId = server.ServerId,
                                 Server = server,
                                 NewCount = 0,
                             };
@@ -432,7 +432,11 @@ namespace M9Studio.ShadowTalk.Client
 
             form.Invoke(() =>
             {
-                Servers[Server].Users[User].NewCount = 0;
+                try
+                {
+                    Servers[Server].Users[User].NewCount = 0;
+                }
+                catch (Exception ex) { }
             });
             DataBase.Send("UPDATE users SET newcount = ? WHERE serverid = ? AND id = ?", 0, Server, User);
             return DataBase.Message(User, Server).OrderBy(m => m.Date).ToList();

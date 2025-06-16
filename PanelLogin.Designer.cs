@@ -74,7 +74,7 @@
             textBox2.PlaceholderText = "Введите пароль";
             textBox2.Size = new Size(354, 23);
             textBox2.TabIndex = 6;
-            textBox2.Text = "12345678";
+            textBox2.Text = "00000000";
             textBox2.UseSystemPasswordChar = true;
             // 
             // textBox1
@@ -85,7 +85,7 @@
             textBox1.PlaceholderText = "Введите логин";
             textBox1.Size = new Size(354, 23);
             textBox1.TabIndex = 5;
-            textBox1.Text = "mina987@com.com";
+            textBox1.Text = "@com.com";
             // 
             // PanelLogin
             // 

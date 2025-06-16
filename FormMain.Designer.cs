@@ -133,7 +133,7 @@
             textBox1.Location = new Point(50, 10);
             textBox1.Margin = new Padding(0);
             textBox1.Name = "textBox1";
-            textBox1.PlaceholderText = "Поиск";
+            textBox1.PlaceholderText = "Поиск пользователя";
             textBox1.Size = new Size(235, 30);
             textBox1.TabIndex = 1;
             textBox1.TextChanged += textBox1_TextChanged;
