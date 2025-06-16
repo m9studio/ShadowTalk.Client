@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             splitContainer1 = new SplitContainer();
             panelUsers = new FlowLayoutPanel();
             panel1 = new Panel();
@@ -145,6 +146,7 @@
             panelChat.Name = "panelChat";
             panelChat.Size = new Size(443, 436);
             panelChat.TabIndex = 2;
+            panelChat.Resize += panelChat_Resize;
             // 
             // flowLayoutPanel1
             // 
@@ -228,6 +230,7 @@
             Controls.Add(panelAir);
             Controls.Add(splitContainer1);
             Font = new Font("Tahoma", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(4, 5, 4, 5);
             MinimumSize = new Size(600, 400);
             Name = "FormMain";

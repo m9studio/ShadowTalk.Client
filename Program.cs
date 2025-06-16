@@ -1,3 +1,5 @@
+using System.Runtime.CompilerServices;
+
 namespace M9Studio.ShadowTalk.Client
 {
     internal static class Program

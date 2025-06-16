@@ -1,9 +1,13 @@
+using Microsoft.VisualBasic.ApplicationServices;
+using System.Diagnostics;
+
 namespace M9Studio.ShadowTalk.Client
 {
     public partial class FormMain : Form
     {
         public Core core = new Core();
         public User userNow;//тот с кем открыт чат
+        public List<Message> messages;
 
         public FormMain()
         {
@@ -11,47 +15,69 @@ namespace M9Studio.ShadowTalk.Client
             core.form = this;
             labelName.Text = "";
             labelServer.Text = "";
+
+            panelChat.FlowDirection = FlowDirection.TopDown;
+            panelChat.WrapContents = false;
+
+            PanelUser.form = this;
+
+            Shown += (o, e) =>
+            {
+
+                textBox1_TextChanged(null, null);
+            };
         }
 
 
         public bool panelAirClose = true;
         private void pictureBox1_Click(object sender, EventArgs e)
         {
-            panelAir.Visible = true;
-            PanelSetting panelSetting = new PanelSetting(this);
-            panelAir.Controls.Add(panelSetting);
-            // Центрируем элемент
-            panelSetting.Anchor = AnchorStyles.None;
-            panelSetting.Location = new Point(
-                (panelAir.Width - panelSetting.Width) / 2,
-                (panelAir.Height - panelSetting.Height) / 2
-            );
-            Text = "ShadowTalk Setting";
+            Invoke(() =>
+            {
+                panelAir.Visible = true;
+                PanelSetting panelSetting = new PanelSetting(this);
+                panelAir.Controls.Add(panelSetting);
+                // Центрируем элемент
+                panelSetting.Anchor = AnchorStyles.None;
+                panelSetting.Location = new Point(
+                    (panelAir.Width - panelSetting.Width) / 2,
+                    (panelAir.Height - panelSetting.Height) / 2
+                );
+                Text = "ShadowTalk Setting";
+            });
         }
         public void panelAir_Click(object sender, EventArgs e)
         {
-            if (panelAirClose)
+            Invoke(() =>
             {
-                panelAir.Visible = false;
-                panelAir.Controls.Clear();
-                Text = "ShadowTalk";
-            }
+                if (panelAirClose)
+                {
+                    panelAir.Visible = false;
+                    panelAir.Controls.Clear();
+                    Text = "ShadowTalk";
+                }
+            });
         }
 
         bool Search = false;
         private void pictureBox2_Click(object sender, EventArgs e)
         {
-            if (!Search)
+
+            Invoke(() =>
             {
-                Search = true;
-                textBox1.Enabled = false;
-                panelUsers.Controls.Clear();
-                if (!core.SearchUser(textBox1.Text)){
-                    Search = false;
-                    textBox1.Enabled = true;
-                    textBox1_TextChanged(null, null);
+                if (!Search)
+                {
+                    Search = true;
+                    textBox1.Enabled = false;
+                    panelUsers.Controls.Clear();
+                    if (!core.SearchUser(textBox1.Text))
+                    {
+                        Search = false;
+                        textBox1.Enabled = true;
+                        textBox1_TextChanged(null, null);
+                    }
                 }
-            }
+            });
         }
 
         public void SearchUserCallBack(List<User> users)
@@ -69,9 +95,12 @@ namespace M9Studio.ShadowTalk.Client
 
         public void textBox1_TextChanged(object sender, EventArgs e)
         {
-            panelUsers.Controls.Clear();
-            string currentText = textBox1.Text.Trim();
-            core.Users.FindAll(u => u.Name.Contains(currentText));
+            Invoke(() =>
+            {
+                panelUsers.Controls.Clear();
+                string currentText = textBox1.Text.Trim();
+                core.Users.FindAll(u => u.Name.Contains(currentText)).ForEach(u => panelUsers.Controls.Add(u.Panel));
+            });
         }
 
 
@@ -80,46 +109,147 @@ namespace M9Studio.ShadowTalk.Client
 
         private void buttonSend_Click(object sender, EventArgs e)
         {
-            string text = messageText.Text;
-            messageText.Text = "";
-            core.SendMessage(userNow, text);
+            Invoke(() =>
+            {
+                string text = messageText.Text;
+                messageText.Text = "";
+                Message msg = core.SendMessage(userNow, text);
+                if (ItemsChat.ContainsKey(msg.UUID))
+                {
+                    ItemsChat[msg.UUID].msg.Status = msg.Status;
+                    ItemsChat[msg.UUID].Update();
+                }
+                else
+                {
+                    AddMessage(msg);
+                }
+            });
         }
+
+
+
+
+
+
+        Dictionary<string, MessageItem> ItemsChat;
         public void OpenChat(User user)
         {
-            if(userNow != null)
+            Invoke(() =>
             {
-                userNow.Form = null;
-            }
-            userNow = user;
-            userNow.Form = this;
+                if (userNow != null)
+                {
+                    userNow.Form = null;
+                }
+                //обновляем данные!!!!
+                userNow = core.OnLoadUser(user.Server, user.Id);
+                if ((userNow == null))
+                {
+                    return;
+                }
 
-            user.NewCount = 0;
-            panelChat.Controls.Clear();
+                ItemsChat = new Dictionary<string, MessageItem>();
 
-            labelName.Text = user.Panel.labelName.Text;
-            labelName.ForeColor = user.Panel.labelName.ForeColor;
+                userNow.Form = this;
 
-            labelServer.Text = user.Panel.labelServer.Text;
-            labelServer.ForeColor = user.Panel.labelServer.ForeColor;
+                user.NewCount = 0;
+                panelChat.Controls.Clear();
 
-            messageText.Enabled = true;
-            buttonSend.Enabled = true;
+                labelName.Text = user.Panel.labelName.Text;
+                labelName.ForeColor = user.Panel.labelName.ForeColor;
+
+                labelServer.Text = user.Panel.labelServer.Text;
+                labelServer.ForeColor = user.Panel.labelServer.ForeColor;
+
+                messageText.Enabled = true;
+                buttonSend.Enabled = true;
+
+                messages = core.DataBase.Message(user.Id, user.ServerId);
+
+                foreach (var message in messages)
+                {
+                    AddMessage(message);
+                }
+            });
         }
-    
+        public void AddMessage(Message message)
+        {
+
+            Invoke(() =>
+            {
+                MessageItem item = new MessageItem(message);
+                item.AutoSize = true;
+                item.MaximumSize = new Size(panelChat.Width - 40, 0); // адаптивная ширина
+                item.Margin = new Padding(5);
+
+                // Центрируем вручную с помощью Padding
+                if (message.Sender == userNow.Id)
+                {
+                    // Прижать вправо — добавляем пустое пространство слева
+                    int leftPadding = panelChat.Width / 2;
+                    item.Padding = new Padding(leftPadding, 0, 0, 0);
+                }
+                else
+                {
+                    // Прижать влево — добавляем пустое пространство справа
+                    int rightPadding = panelChat.Width / 2;
+                    item.Padding = new Padding(0, 0, rightPadding, 0);
+                }
+                ItemsChat.Add(message.UUID, item);
+                panelChat.Controls.Add(item);
+                panelChat.ScrollControlIntoView(panelChat.Controls[panelChat.Controls.Count - 1]);
+            });
+
+        }
+        public void UpdateMessage(string uuid)
+        {
+            Invoke(() =>
+            {
+                if (ItemsChat.ContainsKey(uuid))
+                {
+                    ItemsChat[uuid].update();
+                }
+            });
+        }
+
+
+
         public void ClearChat()
         {
-            messageText.Enabled = false;
-            buttonSend.Enabled = false;
-            panelChat.Controls.Clear();
-            userNow.Form = null;
-            userNow = null;
+            Invoke(() =>
+            {
+                messageText.Enabled = false;
+                buttonSend.Enabled = false;
+                panelChat.Controls.Clear();
+                userNow.Form = null;
+                userNow = null;
 
-            messageText.Text = "";
-            labelName.Text = "";
-            labelServer.Text = "";
+                messageText.Text = "";
+                labelName.Text = "";
+                labelServer.Text = "";
+            });
         }
-    
-    
-    
+
+
+
+        private void panelChat_Resize(object sender, EventArgs e)
+        {
+            Invoke(() =>
+            {
+                foreach (Control ctrl in panelChat.Controls)
+                {
+                    if (ctrl is MessageItem item)
+                    {
+                        int pad = panelChat.Width / 2;
+                        if (item.msg.Sender == userNow.Id)
+                            item.Padding = new Padding(pad, 0, 0, 0);
+                        else
+                            item.Padding = new Padding(0, 0, pad, 0);
+
+                        item.MaximumSize = new Size(panelChat.Width - 40, 0);
+                    }
+                }
+            });
+        }
+
     }
 }

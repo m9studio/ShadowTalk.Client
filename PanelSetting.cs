@@ -1,5 +1,4 @@
 ﻿using System.Net.Sockets;
-using System.Windows.Forms;
 
 namespace M9Studio.ShadowTalk.Client
 {
@@ -43,7 +42,6 @@ namespace M9Studio.ShadowTalk.Client
 
         private void button1_Click(object sender, EventArgs e)
         {
-            
             Visible = false;
             var panel = new PanelLogin(textBoxName.Text, textBoxIP.Text, Convert.ToInt32(textBoxPort.Text), form, this);
 
@@ -107,7 +105,6 @@ namespace M9Studio.ShadowTalk.Client
                 {
                     form.ClearChat();
                 }
-
             }
         }
     }

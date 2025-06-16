@@ -113,7 +113,10 @@ namespace M9Studio.ShadowTalk.Client
                             server.K,
                             server.PublicA,
                             server.PrivateA);
-                        Servers.Add(server.Id, server);
+                        Servers.Add(server.ServerId, server);
+                        Task.Run(() => {
+                            Daemon(server);
+                        });
                         return true;
                     }
                     catch (Exception e)
@@ -160,7 +163,7 @@ namespace M9Studio.ShadowTalk.Client
                 Token = server.token,
                 HMAC = server.hmac,
                 A = server.PublicA,
-                Port = server.Port
+                Port = Port
             }))
             {
                 JObject packet = Session.ReceiveJObject();//либо ошибка, либо сообщения

@@ -1,20 +1,64 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-namespace M9Studio.ShadowTalk.Client
+﻿namespace M9Studio.ShadowTalk.Client
 {
     public partial class MessageItem : UserControl
     {
-        public MessageItem()
+        ContextMenuStrip contextMenu = new ContextMenuStrip();
+        public Message msg;
+
+        ToolTip tooltip = new ToolTip();
+        public MessageItem(Message msg)
         {
+            this.msg = msg;
+            int n = 250;
             InitializeComponent();
+            /*label1.AutoSize = false; // чтобы можно было задать фиксированную ширину
+            label1.MaximumSize = new Size(n, 0); // n — нужная ширина в пикселях
+            label1.AutoEllipsis = false; // если не хотите троеточие
+            label1.TextAlign = ContentAlignment.TopLeft; // или другое выравнивание*/
+            label1.Text = msg.Text;
+
+
+            label1.ContextMenuStrip = contextMenu;
+
+            DateTime dateTime = DateTimeOffset.FromUnixTimeSeconds(msg.Date).LocalDateTime;
+            label2.Text = dateTime.ToString("dd.MM.yyyy\nHH:mm:ss");
+
+            label2.Font = new Font(label2.Font.FontFamily, 8);
+
+            // Настраиваем при необходимости
+            tooltip.AutoPopDelay = 5000;     // сколько показывать (мс)
+            tooltip.InitialDelay = 500;      // задержка перед показом (мс)
+            tooltip.ReshowDelay = 200;       // задержка при повторном наведении
+            tooltip.ShowAlways = true;       // показывать даже если окно не в фокусе
+
+
+
+
+            update();
         }
+
+        public void update()
+        {
+            contextMenu.Items.Clear();
+            if (msg.Status == -2 || msg.Status == -1)
+            {
+                contextMenu.Items.Add("Повторить отправку", null, (s, e) => { });
+
+                tooltip.SetToolTip(label1, "Сообщение не доставлено");
+                return;
+            }
+            if(msg.Status == 0)
+            {
+
+                tooltip.SetToolTip(label1, "Сообщение ожидает получения");
+                return;
+            }
+            //status == 1
+            tooltip.SetToolTip(label1, "Сообщение доставлено");
+
+        }
+
+
+
     }
 }
